@@ -1,0 +1,56 @@
+@page "/game"
+
+<PageTitle>Feuilles, Pierre, Ciseaux</PageTitle>
+
+<h1>Feuilles, Pierre, Ciseaux</h1>
+
+<p>Sélectionnez votre coup :</p>
+
+<div class="d-flex gap-2">
+    <button class="btn btn-primary" @onclick="PlayPierre">Pierre</button>
+    <button class="btn btn-primary" @onclick="PlayFeuille">Feuille</button>
+    <button class="btn btn-primary" @onclick="PlayCiseaux">Ciseaux</button>
+</div>
+
+@if (!string.IsNullOrEmpty(gameResult))
+{
+    <p role="status" class="mt-4">@gameResult</p>
+}
+
+<GameResult IsWinner="@isWinner" HasPlayed="@hasPlayed" />
+
+@code {
+    private string[] choices = { "Pierre", "Feuille", "Ciseaux" };
+    private string gameResult = string.Empty;
+    private bool isWinner = false;
+    private bool hasPlayed = false;
+
+    private void PlayGame(string playerChoice)
+    {
+        var random = new Random();
+        string computerChoice = choices[random.Next(choices.Length)];
+        hasPlayed = true;
+
+        if (playerChoice == computerChoice)
+        {
+            gameResult = $"Égalité! Vous avez choisi {playerChoice}, et l'ordinateur a choisi {computerChoice}.";
+            isWinner = false;
+        }
+        else if ((playerChoice == "Pierre" && computerChoice == "Ciseaux") ||
+                 (playerChoice == "Feuille" && computerChoice == "Pierre") ||
+                 (playerChoice == "Ciseaux" && computerChoice == "Feuille"))
+        {
+            gameResult = $"Vous avez gagné! Vous avez choisi {playerChoice}, et l'ordinateur a choisi {computerChoice}.";
+            isWinner = true;
+        }
+        else
+        {
+            gameResult = $"Vous avez perdu! Vous avez choisi {playerChoice}, et l'ordinateur a choisi {computerChoice}.";
+            isWinner = false;
+        }
+    }
+
+    private void PlayPierre() => PlayGame("Pierre");
+    private void PlayFeuille() => PlayGame("Feuille");
+    private void PlayCiseaux() => PlayGame("Ciseaux");
+}

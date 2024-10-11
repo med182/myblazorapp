@@ -1,0 +1,16 @@
+@code {
+    [Parameter] public bool IsWinner { get; set; }
+    [Parameter] public bool HasPlayed { get; set; } = false;
+}
+
+@if (HasPlayed)
+{
+    if (IsWinner)
+    {
+        <p>Bravo super ! 🎉</p>
+    }
+    else
+    {
+        <p>Ah merde j'ai perdu 😔</p>
+    }
+}
